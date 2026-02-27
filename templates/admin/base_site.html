@@ -1,0 +1,35 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Hospital Management Admin{% endblock %}
+
+{% block branding %}
+<style>
+    #header {
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    #branding h1 {
+        font-size: 22px;
+        font-weight: 600;
+        color: #38bdf8;
+        letter-spacing: 1px;
+    }
+
+    #branding h1::after {
+        content: "  |  Developed by Abhinandan";
+        font-size: 14px;
+        color: #94a3b8;
+        font-weight: 400;
+        margin-left: 10px;
+    }
+
+    body {
+        background: radial-gradient(circle at top, #0f172a, #020617);
+    }
+</style>
+
+<h1>🚀 Hospital Management System</h1>
+
+{% endblock %}

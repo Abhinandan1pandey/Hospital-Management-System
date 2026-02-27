@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hospital Management Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(-45deg, #0f172a, #1e293b, #0ea5e9, #020617);
+        background-size: 400% 400%;
+        animation: gradientBG 10s ease infinite;
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .login-card {
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        border-radius: 20px;
+        width: 350px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .login-card h2 {
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .login-card p {
+        font-size: 13px;
+        color: #cbd5e1;
+        margin-bottom: 25px;
+    }
+
+    .login-card input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 8px;
+        outline: none;
+    }
+
+    .login-card button {
+        width: 100%;
+        padding: 12px;
+        background: #0ea5e9;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .login-card button:hover {
+        background: #0284c7;
+        transform: translateY(-2px);
+    }
+
+    .footer {
+        margin-top: 15px;
+        font-size: 12px;
+        color: #94a3b8;
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="login-card">
+    <h2>🏥 Hospital Management</h2>
+    <p>Enterprise Admin Portal</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.username }}
+        {{ form.password }}
+        <button type="submit">Login</button>
+    </form>
+
+    <div class="footer">
+        Developed by Abhinandan
+    </div>
+</div>
+
+</body>
+</html>

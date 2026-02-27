@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="mb-4">Admin Dashboard</h2>
+
+<div class="row g-4">
+
+    <div class="col-md-3">
+        <div class="card stat-card card-hover bg-primary text-white p-3">
+            <h5>Total Doctors</h5>
+            <h2 id="doctorCount">{{ total_doctors }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card stat-card card-hover bg-success text-white p-3">
+            <h5>Total Patients</h5>
+            <h2 id="patientCount">{{ total_patients }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card stat-card card-hover bg-warning text-dark p-3">
+            <h5>Appointments</h5>
+            <h2 id="appointmentCount">{{ total_appointments }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card stat-card card-hover bg-danger text-white p-3">
+            <h5>Total Revenue</h5>
+            <h2>₹ {{ total_revenue }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<h4>Appointment Analytics</h4>
+
+<canvas id="appointmentChart" height="100"></canvas>
+
+<script>
+    const ctx = document.getElementById('appointmentChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Doctors', 'Patients', 'Appointments'],
+            datasets: [{
+                label: 'Hospital Data',
+                data: [
+                    {{ total_doctors }},
+                    {{ total_patients }},
+                    {{ total_appointments }}
+                ],
+                backgroundColor: [
+                    '#3b82f6',
+                    '#22c55e',
+                    '#f59e0b'
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
+
+{% endblock %}

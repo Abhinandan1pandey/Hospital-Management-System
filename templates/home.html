@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #f4f6f9;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .container {
+            padding: 40px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card h2 {
+            margin: 0;
+            font-size: 35px;
+            color: #2c3e50;
+        }
+
+        .card p {
+            color: gray;
+        }
+
+        canvas {
+            margin-top: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .admin-btn {
+            margin-top: 30px;
+            display: inline-block;
+            padding: 12px 25px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    🏥 Hospital Management Dashboard
+</div>
+
+<div class="container">
+
+    <div class="cards">
+        <div class="card">
+            <h2>{{ total_doctors }}</h2>
+            <p>Total Doctors</p>
+        </div>
+
+        <div class="card">
+            <h2>{{ total_patients }}</h2>
+            <p>Total Patients</p>
+        </div>
+
+        <div class="card">
+            <h2>{{ total_appointments }}</h2>
+            <p>Total Appointments</p>
+        </div>
+
+        <div class="card">
+            <h2>₹ {{ total_revenue }}</h2>
+            <p>Total Revenue</p>
+        </div>
+    </div>
+
+    <canvas id="hospitalChart"></canvas>
+
+    <br>
+    <a href="/admin/" class="admin-btn">Go to Admin Panel</a>
+
+</div>
+
+<script>
+    const ctx = document.getElementById('hospitalChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Doctors', 'Patients', 'Appointments'],
+            datasets: [{
+                label: 'Hospital Overview',
+                data: [
+                    {{ total_doctors }},
+                    {{ total_patients }},
+                    {{ total_appointments }}
+                ],
+                backgroundColor: [
+                    '#3498db',
+                    '#2ecc71',
+                    '#e74c3c'
+                ]
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>
