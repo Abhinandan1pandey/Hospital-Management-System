@@ -9,14 +9,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 # ===============================
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-key")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ['*']
 
 # ===============================
-# INSTALLED APPS
+# APPLICATIONS
 # ===============================
 
 INSTALLED_APPS = [
@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
 
-    # Our Apps
+    # Local Apps
     'accounts',
     'doctors',
     'patients',
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # for Render
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -83,14 +83,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # ===============================
-# DATABASE (Render Compatible)
+# DATABASE (Render Safe)
 # ===============================
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
-    )
-}
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
+    }
+else:
+    # Local fallback (for development only)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # ===============================
 # PASSWORD VALIDATION
@@ -109,7 +118,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
 USE_TZ = True
 
@@ -123,19 +131,23 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ===============================
-# CUSTOM USER MODEL
+# AUTH SETTINGS
 # ===============================
 
 AUTH_USER_MODEL = 'accounts.User'
 
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'
+
 # ===============================
-# CORS SETTINGS
+# CORS
 # ===============================
 
 CORS_ALLOW_ALL_ORIGINS = True
 
 # ===============================
-# REST FRAMEWORK + JWT
+# REST FRAMEWORK
 # ===============================
 
 REST_FRAMEWORK = {
@@ -149,21 +161,6 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
-
-# ===============================
-# OPTIONAL REDIS (Safe for Render)
-# ===============================
-
-if os.environ.get("REDIS_URL"):
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": os.environ.get("REDIS_URL"),
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
-        }
-    }
 
 # ===============================
 # DEFAULT AUTO FIELD
